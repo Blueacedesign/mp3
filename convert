@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video URL to MP3 Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #status {
+            margin-top: 10px;
+            color: #666;
+            word-wrap: break-word;
+        }
+        #downloadLink {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video to MP3 Converter</h1>
+    <input type="text" id="videoUrl" placeholder="Enter YouTube URL">
+    <button onclick="convertToMp3()">Convert to MP3</button>
+    <div id="status"></div>
+    <a id="downloadLink" href="#" download="audio.mp3">Download MP3</a>
+
+    <script>
+        async function convertToMp3() {
+            const urlInput = document.getElementById('videoUrl').value;
+            const status = document.getElementById('status');
+            const downloadLink = document.getElementById('downloadLink');
+            
+            if (!urlInput.includes('youtube.com') && !urlInput.includes('youtu.be')) {
+                status.textContent = 'Please enter a valid YouTube URL';
+                return;
+            }
+
+            status.textContent = 'Converting... Please wait';
+            downloadLink.style.display = 'none';
+
+            try {
+                const videoId = urlInput.split('v=')[1]?.split('&')[0] || urlInput.split('/').pop();
+                const apiUrl = `https://cloud-api-hub-youtube-downloader.p.rapidapi.com/mux?id=${encodeURIComponent(videoId)}&quality=144&codec=h264&audioFormat=best&language=en`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-key': 'qlp6QmV8E7mshZA73VqOVh3VPDPxp1FY036jsnf8lY9rKHzTOR',
+                        'x-rapidapi-host': 'cloud-api-hub-youtube-downloader.p.rapidapi.com'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                if (data.url || data.downloadUrl || data.link) {
+                    status.textContent = 'Conversion complete!';
+                    downloadLink.href = data.url || data.downloadUrl || data.link;
+                    downloadLink.style.display = 'block';
+                } else if (data.status === 'processing') {
+                    status.textContent = 'Still processing, please wait...';
+                } else if (data.error || data.message) {
+                    status.textContent = 'API Error: ' + (data.error || data.message);
+                } else {
+                    status.textContent = 'Unexpected response format: ' + JSON.stringify(data);
+                }
+            } catch (error) {
+                status.textContent = 'Request Failed: ' + error.message;
+                console.error('Fetch Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
