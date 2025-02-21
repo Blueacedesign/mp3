@@ -1,0 +1,45 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.progress {
+    height: 25px;
+    border-radius: 5px;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    margin-top: auto;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#progressSection, #downloadSection, #errorSection {
+    margin-top: 20px;
+}
+
+.alert {
+    border-radius: 5px;
+}

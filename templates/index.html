@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-music me-2"></i>Convert Video to MP3</h4>
+            </div>
+            <div class="card-body">
+                <form id="convertForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="videoUrl" class="form-label">Enter video URL</label>
+                        <input type="url" class="form-control" id="videoUrl" name="url" 
+                               placeholder="https://www.youtube.com/watch?v=..." required>
+                        <div class="form-text">Enter a YouTube URL or any direct video link</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="convertBtn">
+                        <i class="fas fa-sync-alt me-2"></i>Convert to MP3
+                    </button>
+                </form>
+
+                <div id="progressSection" class="d-none">
+                    <h5><i class="fas fa-cog fa-spin me-2"></i>Converting...</h5>
+                    <div class="progress mb-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             role="progressbar" 
+                             style="width: 0%" 
+                             id="progressBar">0%</div>
+                    </div>
+                </div>
+
+                <div id="downloadSection" class="d-none">
+                    <h5 class="text-success"><i class="fas fa-check-circle me-2"></i>Conversion Complete!</h5>
+                    <a href="#" id="downloadBtn" class="btn btn-success">
+                        <i class="fas fa-download me-2"></i>Download MP3
+                    </a>
+                </div>
+
+                <div id="errorSection" class="d-none">
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span id="errorMessage"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
